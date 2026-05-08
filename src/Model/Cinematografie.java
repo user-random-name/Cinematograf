@@ -1,16 +1,12 @@
 package Model;
-import java.time.LocalDate;
-
 import Database.Connect;
 
 import java.sql.*;
+public class Cinematografie {
 
-public class Film {
-
-
-    public void addFilme(int id, String nume, LocalDate datalan, String gen,String audio, int limvar, int durmin,String format, String sunet)    {
-    String sql =
-                "INSERT INTO filme VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
+    public void addCinematografe(int id, String nume, String adresa, String codPostal, String raion, String tara) {
+        String sql =
+                "INSERT INTO cinematografie VALUES (?, ?, ?, ?, ?, ?);";
 
         try (
                 Connection conn = Connect.connect();
@@ -20,17 +16,14 @@ public class Film {
 
             pstmt.setInt(1, id);
             pstmt.setString(2, nume);
-            pstmt.setDate(3, Date.valueOf(datalan));
-            pstmt.setString(4, gen);
-            pstmt.setString(5, audio);
-            pstmt.setInt(6, limvar);
-            pstmt.setInt(7, durmin);
-            pstmt.setString(8, format);
-            pstmt.setString(9, sunet);
+            pstmt.setString(3, adresa);
+            pstmt.setString(4, codPostal);
+            pstmt.setString(5, raion);
+            pstmt.setString(6, tara);
 
             pstmt.executeUpdate();
 
-            System.out.println("Filmul a fost adaugat");
+            System.out.println("cinematografie a fost adaugat");
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -38,8 +31,8 @@ public class Film {
     }
 
 
-    public void showFilme() {
-        String sql = "SELECT * FROM filme;";
+    public void showCinematografe() {
+        String sql = "SELECT * FROM cinematografie;";
 
         try (
                 Connection conn = Connect.connect();
@@ -49,23 +42,17 @@ public class Film {
 
             while (rs.next()) {
                 System.out.println(
-                        rs.getInt("IdFilme")
+                        rs.getInt("IdCinematografie")
                                 + " | " +
-                                rs.getString("Denumire")
+                                rs.getString("Nume")
                                 + " | " +
-                                rs.getString("Data_Lansare")
+                                rs.getString("Adresa")
                                 + " | " +
-                                rs.getString("Gen")
+                                rs.getString("CodPostal")
                                 + " | " +
-                                rs.getString("Audio")
+                                rs.getString("Raion")
                                 + " | " +
-                                rs.getString("Limita_Varsta")
-                                + " | " +
-                                rs.getString("DurataMinute")
-                                + " | " +
-                                rs.getString("Format")
-                                + " | " +
-                                rs.getString("Sunet")
+                                rs.getString("Tara")
                 );
             }
 
@@ -74,9 +61,9 @@ public class Film {
         }
     }
 
-    public void updateFilme(int id,String newNume) {
+    public void updateCinematografe(int id,String newNume) {
         String sql =
-                "UPDATE filme SET Denumire = ? WHERE IdFilme = ?;";
+                "UPDATE cinematografie SET Nume = ? WHERE Idcinematografie = ?;";
         try (
                 Connection conn = Connect.connect();
                 PreparedStatement pstmt =
@@ -85,15 +72,15 @@ public class Film {
             pstmt.setString(1, newNume);
             pstmt.setInt(2, id);
             pstmt.executeUpdate();
-            System.out.println("Filmul a fost modificat cu succes!");
+            System.out.println("Cinematograf a fost modificat cu succes!");
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-    public void deleteFilme(int id) {
+    public void deleteCinematograf(int id) {
         String sql =
-                "DELETE FROM filme WHERE IdFilme = ?;";
+                "DELETE FROM cinematografie WHERE Idcinematografie = ?;";
         try (
                 Connection conn = Connect.connect();
                 PreparedStatement pstmt =
@@ -102,11 +89,12 @@ public class Film {
 
             pstmt.setInt(1, id);
             pstmt.executeUpdate();
-            System.out.println("Filmul a fost șters cu succes!");
+            System.out.println("Cinematograf a fost șters cu succes!");
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
 
 }
