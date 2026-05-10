@@ -1,5 +1,10 @@
-package Model;
-import Database.Connect;
+package Repository;
+
+public class CinematografRepository {
+}
+
+
+/*import Database.Connect;
 
 import java.sql.*;
 public class Cinematografie {
@@ -97,4 +102,4 @@ public class Cinematografie {
     }
 
 
-}
+}*/

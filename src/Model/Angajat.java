@@ -1,12 +1,12 @@
 package Model;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
-public class Angajat extends Person{
-    String functie;
-    Date dataAngajari;
-    double salariuLunar;
-    int telefon;
-
-
+public class Angajat extends Persoana{
+    private int idAngajat;
+    private String functie;
+    private LocalDate dataAngajarii;
+    private double salariuLunar;
+    private String telefon;
+    private int idCinematograf;
 }

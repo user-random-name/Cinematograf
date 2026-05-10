@@ -1,112 +1,137 @@
 package Model;
+import Enum.TipGen;
+import Enum.TipAudio;
+import Enum.TipSunet;
+import  Enum.TipFormat;
 import java.time.LocalDate;
 
-import Database.Connect;
-
-import java.sql.*;
-
 public class Film {
+    private int id;
+    private String denumire;
+    private LocalDate dataLansare;
+    private TipGen gen;
+    private TipAudio audio;
+    private int limVarsta;
+    private int durMinute;
+    private TipFormat format;
+    private TipSunet sunet;
 
 
-    public void addFilme(int id, String nume, LocalDate datalan, String gen,String audio, int limvar, int durmin,String format, String sunet)    {
-    String sql =
-                "INSERT INTO filme VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
+    //Constructorii
+    public Film(int id, String denumire, LocalDate dataLansare, TipGen gen, TipAudio audio, int limVarsta, int durMinute, TipFormat format, TipSunet sunet) {
+        setId(id);
+        setDenumire(denumire);
+        setDataLansare(dataLansare);
+        setGen(gen);
+        setAudio(audio);
+        setLimVarsta(limVarsta);
+        setDurMinute(durMinute);
+        setFormat(format);
+        setSunet(sunet);}
 
-        try (
-                Connection conn = Connect.connect();
-                PreparedStatement pstmt =
-                        conn.prepareStatement(sql)
-        ) {
-
-            pstmt.setInt(1, id);
-            pstmt.setString(2, nume);
-            pstmt.setDate(3, Date.valueOf(datalan));
-            pstmt.setString(4, gen);
-            pstmt.setString(5, audio);
-            pstmt.setInt(6, limvar);
-            pstmt.setInt(7, durmin);
-            pstmt.setString(8, format);
-            pstmt.setString(9, sunet);
-
-            pstmt.executeUpdate();
-
-            System.out.println("Filmul a fost adaugat");
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    public Film() {
     }
 
 
-    public void showFilme() {
-        String sql = "SELECT * FROM filme;";
 
-        try (
-                Connection conn = Connect.connect();
-                Statement stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery(sql)
-        ) {
+    //getters/setters
+    public int getId() {return id;}
+    public void setId(int id) {
+        if(id < 0 ){
+            throw new IllegalArgumentException("Id invalid!");}
+        this.id = id;}
 
-            while (rs.next()) {
-                System.out.println(
-                        rs.getInt("IdFilme")
-                                + " | " +
-                                rs.getString("Denumire")
-                                + " | " +
-                                rs.getString("Data_Lansare")
-                                + " | " +
-                                rs.getString("Gen")
-                                + " | " +
-                                rs.getString("Audio")
-                                + " | " +
-                                rs.getString("Limita_Varsta")
-                                + " | " +
-                                rs.getString("DurataMinute")
-                                + " | " +
-                                rs.getString("Format")
-                                + " | " +
-                                rs.getString("Sunet")
-                );
-            }
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    public String getDenumire() {return denumire;}
+    public void setDenumire(String denumire) {
+        if(denumire == null || denumire.isBlank()) {
+            throw new IllegalArgumentException("Denumirea nu poate fi goala!");}
+        this.denumire = denumire;}
+
+
+    public LocalDate getDataLansare() {return dataLansare;}
+    public void setDataLansare(LocalDate dataLansare) {
+        if(dataLansare == null) {
+            throw new IllegalArgumentException("Data nu poate fi null!");}
+        if(dataLansare.isAfter(LocalDate.now())) {
+            throw new IllegalArgumentException("Data lansarii nu poate fi in viitor!");}
+        this.dataLansare = dataLansare;}
+
+
+    public TipGen getGen() {return gen;}
+    public void setGen(TipGen gen) {
+        if(gen == null ) {
+            throw new IllegalArgumentException("Denumirea nu poate fi goala!");}
+        this.gen = gen;}
+
+
+    public TipAudio getAudio() {return audio;}
+    public void setAudio(TipAudio audio) {
+        if(audio == null ) {
+            throw new IllegalArgumentException("Audio nu poate fi null!");}
+        this.audio = audio;}
+
+
+    public int getLimVarsta() {return limVarsta;}
+    public void setLimVarsta(int limVarsta) {
+        if(limVarsta < 0 || limVarsta > 20) {
+            throw new IllegalArgumentException("Limita de varsta invalida!");}
+        this.limVarsta = limVarsta;}
+
+
+    public int getDurMinute() {
+        return durMinute;}
+    public void setDurMinute(int durMinute) {
+        if(durMinute < 0 ){
+            throw new IllegalArgumentException("Durata trebuie sa fie pozitiva!");}
+        if(durMinute > 500) {
+            throw new IllegalArgumentException("Durata filmului este imposibila!");}
+        this.durMinute = durMinute;}
+
+
+    public TipFormat getFormat() {return format;}
+    public void setFormat(TipFormat format) {
+        if(format == null ) {
+            throw new IllegalArgumentException("Formatul nu poate fi gol!");}
+        this.format = format;}
+
+
+    public TipSunet getSunet() {return sunet;}
+    public void setSunet(TipSunet sunet) {
+        if(denumire == null || denumire.isBlank()) {
+            throw new IllegalArgumentException("Sunetul nu poate fi null!");}
+        this.sunet = sunet;}
+
+
+    //toString()
+    @Override
+    public String toString() {
+        return "Film{" +
+                "id=" + id +
+                ", denumire='" + denumire + '\'' +
+                ", dataLansare=" + dataLansare +
+                ", gen='" + gen + '\'' +
+                ", audio='" + audio + '\'' +
+                ", limitaVarsta=" + limVarsta +
+                ", durataMinute=" + durMinute +
+                ", format='" + format + '\'' +
+                ", sunet='" + sunet + '\'' +
+                '}';
     }
 
-    public void updateFilme(int id,String newNume) {
-        String sql =
-                "UPDATE filme SET Denumire = ? WHERE IdFilme = ?;";
-        try (
-                Connection conn = Connect.connect();
-                PreparedStatement pstmt =
-                        conn.prepareStatement(sql)
-        ) {
-            pstmt.setString(1, newNume);
-            pstmt.setInt(2, id);
-            pstmt.executeUpdate();
-            System.out.println("Filmul a fost modificat cu succes!");
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    //Metoda optionala
+    public boolean estePentruAdulti() {
+        return limVarsta >= 18;
     }
-    public void deleteFilme(int id) {
-        String sql =
-                "DELETE FROM filme WHERE IdFilme = ?;";
-        try (
-                Connection conn = Connect.connect();
-                PreparedStatement pstmt =
-                        conn.prepareStatement(sql)
-        ) {
-
-            pstmt.setInt(1, id);
-            pstmt.executeUpdate();
-            System.out.println("Filmul a fost șters cu succes!");
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    public boolean esteLung() {
+        return durMinute > 150;
     }
+    public String categorieFilm() {
+        if(limVarsta >= 18) {
+            return "Adult";
+        }
+        return "General";
+    }
+
 
 }
