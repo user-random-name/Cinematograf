@@ -1,7 +1,8 @@
 package Model;
 import Enum.TipSala;
+import Interfete.IAfisare;
 
-public class Sala {
+public class Sala implements IAfisare {
     private int id;
     private String nume;
     private int capacitate;
@@ -59,7 +60,7 @@ public class Sala {
     //toString()
     @Override
     public String toString() {
-        return "Film{" +
+        return "Sala{" +
                 "id=" + id +
                 ", NumeSala='" + nume + '\'' +
                 ", capacitate=" + capacitate +
@@ -89,5 +90,9 @@ public class Sala {
         return tipSala == TipSala.THREE_D;
     }
 
+    @Override
+    public void afisare(){
+        System.out.println(this);
+    }
 
 }

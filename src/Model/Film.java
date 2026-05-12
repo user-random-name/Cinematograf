@@ -3,9 +3,11 @@ import Enum.TipGen;
 import Enum.TipAudio;
 import Enum.TipSunet;
 import  Enum.TipFormat;
+import Interfete.IAfisare;
+
 import java.time.LocalDate;
 
-public class Film {
+public class Film implements IAfisare {
     private int id;
     private String denumire;
     private LocalDate dataLansare;
@@ -131,6 +133,11 @@ public class Film {
             return "Adult";
         }
         return "General";
+    }
+
+    @Override
+    public void afisare(){
+        System.out.println(this);
     }
 
 

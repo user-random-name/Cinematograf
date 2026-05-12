@@ -1,8 +1,9 @@
 package Model;
 import Enum.Oras;
 import Enum.Tara;
+import Interfete.IAfisare;
 
-public class Cinematograf {
+public class Cinematograf implements IAfisare {
     private int id;
     private String nume;
     private String adresa;
@@ -70,7 +71,7 @@ public class Cinematograf {
     //toString()
     @Override
     public String toString() {
-        return "Film{" +
+        return "Cinematograf{" +
                 "id=" + id +
                 ", Nume='" + nume + '\'' +
                 ", Adresa=" + adresa +
@@ -87,6 +88,11 @@ public class Cinematograf {
 
     public String afiseazaLocatie() {
         return adresa + ", " + oras + ", " + tara;
+    }
+
+    @Override
+    public void afisare(){
+        System.out.println(this);
     }
 
 

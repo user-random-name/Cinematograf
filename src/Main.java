@@ -1,12 +1,18 @@
+import Model.Cinematograf;
+import Repository.CinematografRepository;
+import Enum.Oras;
+import Enum.Tara;
+
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
 
-        Scanner sc = new Scanner(System.in);
 
+        /*Scanner sc = new Scanner(System.in);
+        CinematografRepository repo = new CinematografRepository();
 
-    /*    Cinematografie cinema = new Cinematografie();
         System.out.print("ID cinematograf: ");
         int id = sc.nextInt();
         sc.nextLine();
@@ -20,72 +26,40 @@ public class Main {
         System.out.print("Cod postal: ");
         String codPostal = sc.nextLine();
 
-        System.out.print("Raion: ");
-        String raion = sc.nextLine();
+        System.out.print("Oras: ");
+        Oras oras = Oras.valueOf( sc.nextLine().toUpperCase() );
 
         System.out.print("Tara: ");
-        String tara = sc.nextLine();
+        Tara tara = Tara.valueOf(sc.nextLine().toUpperCase());
+
+        Cinematograf cinematograf = new Cinematograf(id, nume, adresa, codPostal, oras, tara);
 
 
-        // CREATE
-        cinema.addCinematografe(id, nume,  adresa,  codPostal,  raion,  tara);
-        // READ
-        cinema.showCinematografe();
-        // UPDATE
-        cinema.updateCinematografe(
-                1,
-                "Cineplex"
-        );
-        // DELETE
-        cinema.deleteCinematograf(6);
-        // READ
-        cinema.showCinematografe();*/
+// CREATE
+        repo.addCinematograf(cinematograf);
 
-    /*   Film film = new Film();
 
-        System.out.print("ID film: ");
-        int id = sc.nextInt();
-        sc.nextLine();
+// READ
+        List<Cinematograf> lista = repo.getAllCinematografe();
 
-        System.out.print("Denumire: ");
-        String nume = sc.nextLine();
+        for(Cinematograf c : lista) {
+            System.out.println(c);
+        }
 
-        System.out.print("Data lansare (yyyy-mm-dd): ");
-        String dataText = sc.nextLine();
-        LocalDate dataLansare = LocalDate.parse(dataText);
 
-        System.out.print("Gen: ");
-        String gen = sc.nextLine();
+// UPDATE
+        repo.updateCinematograf(1,"Cineplex");
 
-        System.out.print("Audio: ");
-        String audio = sc.nextLine();
 
-        System.out.print("Limita varsta: ");
-        int limita = sc.nextInt();
+// DELETE
+        repo.deleteCinematograf(6);
+        repo.deleteCinematograf(7);
+        repo.deleteCinematograf(8);
+        repo.deleteCinematograf(9);
+        repo.deleteCinematograf(10);
+        repo.deleteCinematograf(11);*/
 
-        System.out.print("Durata minute: ");
-        int durata = sc.nextInt();
-        sc.nextLine();
 
-        System.out.print("Format: ");
-        String format = sc.nextLine();
-
-        System.out.print("Sunet: ");
-        String sunet = sc.nextLine();
-
-        // CREATE
-        film.addFilme(id, nume,  dataLansare,  gen,  audio, limita,  durata,  format,  sunet );
-        // READ
-        film.showFilme();
-        // UPDATE
-        film.updateFilme(
-                51,
-                "Interstellar"
-        );
-        // DELETE
-        film.deleteFilme(51);
-        // READ
-        film.showFilme();*/
 
 
 

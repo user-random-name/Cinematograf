@@ -1,42 +1,59 @@
 package Repository;
 
-public class CinematografRepository {
-}
-
-
-/*import Database.Connect;
+import Database.Connect;
+import Enum.Oras;
+import Enum.Tara;
+import Model.Cinematograf;
 
 import java.sql.*;
-public class Cinematografie {
+import java.util.ArrayList;
+import java.util.List;
 
-    public void addCinematografe(int id, String nume, String adresa, String codPostal, String raion, String tara) {
-        String sql =
-                "INSERT INTO cinematografie VALUES (?, ?, ?, ?, ?, ?);";
+public class CinematografRepository {
+
+    // CREATE
+    public void addCinematograf(Cinematograf cinematograf) {
+
+        String sql = "INSERT INTO cinematografie VALUES (?, ?, ?, ?, ?, ?);";
 
         try (
                 Connection conn = Connect.connect();
-                PreparedStatement pstmt =
-                        conn.prepareStatement(sql)
+                PreparedStatement pstmt = conn.prepareStatement(sql)
         ) {
 
-            pstmt.setInt(1, id);
-            pstmt.setString(2, nume);
-            pstmt.setString(3, adresa);
-            pstmt.setString(4, codPostal);
-            pstmt.setString(5, raion);
-            pstmt.setString(6, tara);
+            pstmt.setInt(1, cinematograf.getId());
+            pstmt.setString(2, cinematograf.getNume());
+            pstmt.setString(3, cinematograf.getAdresa());
+            pstmt.setString(4, cinematograf.getCodPostal());
+
+            // enums -> String
+            pstmt.setString(
+                    5,
+                    cinematograf.getOras().name()
+            );
+
+            pstmt.setString(
+                    6,
+                    cinematograf.getTara().name()
+            );
 
             pstmt.executeUpdate();
 
-            System.out.println("cinematografie a fost adaugat");
+            System.out.println("Cinematograful a fost adaugat cu succes!");
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(
+                    "Eroare la adaugare: " + e.getMessage()
+            );
         }
     }
 
 
-    public void showCinematografe() {
+    // READ
+    public List<Cinematograf> getAllCinematografe() {
+
+        List<Cinematograf> cinematografe = new ArrayList<>();
+
         String sql = "SELECT * FROM cinematografie;";
 
         try (
@@ -44,62 +61,107 @@ public class Cinematografie {
                 Statement stmt = conn.createStatement();
                 ResultSet rs = stmt.executeQuery(sql)
         ) {
-
             while (rs.next()) {
-                System.out.println(
-                        rs.getInt("IdCinematografie")
-                                + " | " +
-                                rs.getString("Nume")
-                                + " | " +
-                                rs.getString("Adresa")
-                                + " | " +
-                                rs.getString("CodPostal")
-                                + " | " +
-                                rs.getString("Raion")
-                                + " | " +
-                                rs.getString("Tara")
-                );
+                Cinematograf cinematograf = new Cinematograf(
+                                rs.getInt("IdCinematografie"),
+                                rs.getString("Nume"),
+                                rs.getString("Adresa"),
+                                rs.getString("CodPostal"),
+                                Oras.valueOf(rs.getString("Oras").toUpperCase()),
+                                Tara.valueOf(rs.getString("Tara").toUpperCase()));
+                cinematografe.add(cinematograf);
             }
-
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(
+                    "Eroare la afisare2: "
+                            + e.getMessage()
+            );
         }
+        return cinematografe;
     }
 
-    public void updateCinematografe(int id,String newNume) {
-        String sql =
-                "UPDATE cinematografie SET Nume = ? WHERE Idcinematografie = ?;";
+
+    // UPDATE
+    public void updateCinematograf(
+            int id,
+            String numeNou
+    ) {
+
+        String sql = "UPDATE cinematografie " + "SET Nume = ? " + "WHERE IdCinematografie = ?;";
+
         try (
                 Connection conn = Connect.connect();
-                PreparedStatement pstmt =
-                        conn.prepareStatement(sql)
+                PreparedStatement pstmt = conn.prepareStatement(sql)
         ) {
-            pstmt.setString(1, newNume);
-            pstmt.setInt(2, id);
-            pstmt.executeUpdate();
-            System.out.println("Cinematograf a fost modificat cu succes!");
 
+            pstmt.setString(1, numeNou);
+            pstmt.setInt(2, id);
+
+            int rows = pstmt.executeUpdate();
+
+            if (rows > 0) {
+                System.out.println("Cinematograful a fost modificat!");
+            } else {
+                System.out.println("Nu exista cinematograf cu acest ID!");
+            }
         } catch (SQLException e) {
-            e.printStackTrace();
+
+            System.out.println("Eroare la modificare: " + e.getMessage());
         }
     }
+
+
+    // DELETE
     public void deleteCinematograf(int id) {
-        String sql =
-                "DELETE FROM cinematografie WHERE Idcinematografie = ?;";
+
+        String sql = "DELETE FROM cinematografie " + "WHERE IdCinematografie = ?;";
         try (
                 Connection conn = Connect.connect();
-                PreparedStatement pstmt =
-                        conn.prepareStatement(sql)
+                PreparedStatement pstmt = conn.prepareStatement(sql)
         ) {
 
             pstmt.setInt(1, id);
-            pstmt.executeUpdate();
-            System.out.println("Cinematograf a fost șters cu succes!");
+            int rows = pstmt.executeUpdate();
+
+            if (rows > 0) {
+                System.out.println("Cinematograful a fost sters!");
+            } else {
+                System.out.println("Nu exista cinematograf cu acest ID!");
+            }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Eroare la stergere: " + e.getMessage());
         }
     }
 
 
-}*/
+    // SEARCH
+    public Cinematograf findByName(String nume) {
+
+        String sql = "SELECT * FROM cinematografie " + "WHERE Nume = ?;";
+
+        try (
+                Connection conn = Connect.connect();
+                PreparedStatement pstmt = conn.prepareStatement(sql)
+        ) {
+
+            pstmt.setString(1, nume);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+
+                return new Cinematograf(
+                        rs.getInt("IdCinematografie"),
+                        rs.getString("Nume"),
+                        rs.getString("Adresa"),
+                        rs.getString("CodPostal"),
+                        Oras.valueOf(rs.getString("Oras").toUpperCase()),
+                        Tara.valueOf(rs.getString("Tara").toUpperCase()));
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Eroare la cautare: " + e.getMessage());
+        }
+        return null;
+    }
+}
