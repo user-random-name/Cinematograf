@@ -1,21 +1,21 @@
+-- Database: Cinematograf
 
-
-
+-- DROP DATABASE IF EXISTS "Cinematograf";
 CREATE TABLE Cinematografie(
     IdCinematografie INT PRIMARY KEY NOT NULL,
     Nume TEXT NOT NULL,
     Adresa VARCHAR(40) NOT NULL,
     CodPostal VARCHAR(10) NOT NULL,
-    Raion TEXT NOT NULL,
+    Oras TEXT NOT NULL,
     Tara TEXT NOT NULL
 );
 
 INSERT INTO Cinematografie VALUES
-(1, 'Cinema City', 'Bd. Stefan cel Mare 136', 'MD2001', 'Chisinau', 'Moldova'),
-(2, 'Patria Multiplex', 'Str. Arborilor 21', 'MD2025', 'Chisinau', 'Moldova'),
-(3, 'Patria Loteanu', 'Bd. Stefan cel Mare 103', 'MD2001', 'Chisinau', 'Moldova'),
-(4, 'Cinema Buiucani', 'Str. Alba Iulia 75', 'MD2071', 'Chisinau', 'Moldova'),
-(5, 'Cinema Balti', 'Str. Independentei 12', 'MD3100', 'Balti', 'Moldova');
+(1, 'Cinema City', 'Bd. Stefan cel Mare 136', 'MD-2001', 'Chisinau', 'Moldova'),
+(2, 'Patria Multiplex', 'Str. Arborilor 21', 'MD-2025', 'Chisinau', 'Moldova'),
+(3, 'Patria Loteanu', 'Bd. Stefan cel Mare 103', 'MD-2001', 'Chisinau', 'Moldova'),
+(4, 'Cinema Buiucani', 'Str. Alba Iulia 75', 'MD-2071', 'Chisinau', 'Moldova'),
+(5, 'Cinema Balti', 'Str. Independentei 12', 'MD-3100', 'Balti', 'Moldova');
 
 
 
@@ -109,60 +109,61 @@ CREATE TABLE Clienti(
     IdClienti INT PRIMARY KEY NOT NULL,
     Nume TEXT NOT NULL,
     Prenume TEXT NOT NULL,
-    Email VARCHAR(50) NOT NULL
+    Email VARCHAR(50) NOT NULL,
+	Telefon VARCHAR(15) NOT NULL
 );
 
 INSERT INTO Clienti VALUES
-(1,'Popescu','Ion','ion1@gmail.com'),
-(2,'Ionescu','Maria','maria2@gmail.com'),
-(3,'Rusu','Andrei','andrei3@gmail.com'),
-(4,'Munteanu','Elena','elena4@gmail.com'),
-(5,'Popa','Daniel','daniel5@gmail.com'),
-(6,'Moraru','Ana','ana6@gmail.com'),
-(7,'Ceban','Victor','victor7@gmail.com'),
-(8,'Dumitru','Irina','irina8@gmail.com'),
-(9,'Luca','Mihai','mihai9@gmail.com'),
-(10,'Stan','Alina','alina10@gmail.com'),
-(11,'Toma','Cristian','cristian11@gmail.com'),
-(12,'Nistor','Bianca','bianca12@gmail.com'),
-(13,'Enache','Paul','paul13@gmail.com'),
-(14,'Voicu','Simona','simona14@gmail.com'),
-(15,'Marin','George','george15@gmail.com'),
-(16,'Barbu','Raluca','raluca16@gmail.com'),
-(17,'Ilie','Adrian','adrian17@gmail.com'),
-(18,'Costin','Daria','daria18@gmail.com'),
-(19,'Florea','Alex','alex19@gmail.com'),
-(20,'Neagu','Teodora','teodora20@gmail.com'),
-(21,'Dragomir','Vlad','vlad21@gmail.com'),
-(22,'Gheorghe','Ioana','ioana22@gmail.com'),
-(23,'Serban','Robert','robert23@gmail.com'),
-(24,'Matei','Larisa','larisa24@gmail.com'),
-(25,'Anghel','Florin','florin25@gmail.com'),
-(26,'Badea','Denisa','denisa26@gmail.com'),
-(27,'Dinu','Alexandra','alexandra27@gmail.com'),
-(28,'Filip','Rares','rares28@gmail.com'),
-(29,'Grigore','Paula','paula29@gmail.com'),
-(30,'Iacob','Stefan','stefan30@gmail.com'),
-(31,'Jipa','Camelia','camelia31@gmail.com'),
-(32,'Kovacs','Eva','eva32@gmail.com'),
-(33,'Lazar','Ovidiu','ovidiu33@gmail.com'),
-(34,'Mihai','Corina','corina34@gmail.com'),
-(35,'Nica','Sorin','sorin35@gmail.com'),
-(36,'Olaru','Diana','diana36@gmail.com'),
-(37,'Pavel','Tudor','tudor37@gmail.com'),
-(38,'Radulescu','Ilinca','ilinca38@gmail.com'),
-(39,'Sandu','Emil','emil39@gmail.com'),
-(40,'Tudor','Adela','adela40@gmail.com'),
-(41,'Ursu','Liviu','liviu41@gmail.com'),
-(42,'Vasilescu','Anca','anca42@gmail.com'),
-(43,'Zaharia','Bogdan','bogdan43@gmail.com'),
-(44,'Apostol','Irina','irina44@gmail.com'),
-(45,'Balan','Marius','marius45@gmail.com'),
-(46,'Chiriac','Silvia','silvia46@gmail.com'),
-(47,'Dobre','Ionut','ionut47@gmail.com'),
-(48,'Ene','Gabriela','gabriela48@gmail.com'),
-(49,'Fodor','Attila','attila49@gmail.com'),
-(50,'Georgescu','Claudia','claudia50@gmail.com');
+(1,'Popescu','Ion','ion1@gmail.com','0791000001'),
+(2,'Ionescu','Maria','maria2@gmail.com','0791000002'),
+(3,'Rusu','Andrei','andrei3@gmail.com','0791000003'),
+(4,'Munteanu','Elena','elena4@gmail.com','0791000004'),
+(5,'Popa','Daniel','daniel5@gmail.com','0791000005'),
+(6,'Moraru','Ana','ana6@gmail.com','0791000006'),
+(7,'Ceban','Victor','victor7@gmail.com','0791000007'),
+(8,'Dumitru','Irina','irina8@gmail.com','0791000008'),
+(9,'Luca','Mihai','mihai9@gmail.com','0791000009'),
+(10,'Stan','Alina','alina10@gmail.com','0791000010'),
+(11,'Toma','Cristian','cristian11@gmail.com','0791000011'),
+(12,'Nistor','Bianca','bianca12@gmail.com','0791000012'),
+(13,'Enache','Paul','paul13@gmail.com','0791000013'),
+(14,'Voicu','Simona','simona14@gmail.com','0791000014'),
+(15,'Marin','George','george15@gmail.com','0791000015'),
+(16,'Barbu','Raluca','raluca16@gmail.com','0791000016'),
+(17,'Ilie','Adrian','adrian17@gmail.com','0791000017'),
+(18,'Costin','Daria','daria18@gmail.com','0791000018'),
+(19,'Florea','Alex','alex19@gmail.com','0791000019'),
+(20,'Neagu','Teodora','teodora20@gmail.com','0791000020'),
+(21,'Dragomir','Vlad','vlad21@gmail.com','0791000021'),
+(22,'Gheorghe','Ioana','ioana22@gmail.com','0791000022'),
+(23,'Serban','Robert','robert23@gmail.com','0791000023'),
+(24,'Matei','Larisa','larisa24@gmail.com','0791000024'),
+(25,'Anghel','Florin','florin25@gmail.com','0791000025'),
+(26,'Badea','Denisa','denisa26@gmail.com','0791000026'),
+(27,'Dinu','Alexandra','alexandra27@gmail.com','0791000027'),
+(28,'Filip','Rares','rares28@gmail.com','0791000028'),
+(29,'Grigore','Paula','paula29@gmail.com','0791000029'),
+(30,'Iacob','Stefan','stefan30@gmail.com','0791000030'),
+(31,'Jipa','Camelia','camelia31@gmail.com','0791000031'),
+(32,'Kovacs','Eva','eva32@gmail.com','0791000032'),
+(33,'Lazar','Ovidiu','ovidiu33@gmail.com','0791000033'),
+(34,'Mihai','Corina','corina34@gmail.com','0791000034'),
+(35,'Nica','Sorin','sorin35@gmail.com','0791000035'),
+(36,'Olaru','Diana','diana36@gmail.com','0791000036'),
+(37,'Pavel','Tudor','tudor37@gmail.com','0791000037'),
+(38,'Radulescu','Ilinca','ilinca38@gmail.com','0791000038'),
+(39,'Sandu','Emil','emil39@gmail.com','0791000039'),
+(40,'Tudor','Adela','adela40@gmail.com','0791000040'),
+(41,'Ursu','Liviu','liviu41@gmail.com','0791000041'),
+(42,'Vasilescu','Anca','anca42@gmail.com','0791000042'),
+(43,'Zaharia','Bogdan','bogdan43@gmail.com','0791000043'),
+(44,'Apostol','Irina','irina44@gmail.com','0791000044'),
+(45,'Balan','Marius','marius45@gmail.com','0791000045'),
+(46,'Chiriac','Silvia','silvia46@gmail.com','0791000046'),
+(47,'Dobre','Ionut','ionut47@gmail.com','0791000047'),
+(48,'Ene','Gabriela','gabriela48@gmail.com','0791000048'),
+(49,'Fodor','Attila','attila49@gmail.com','0791000049'),
+(50,'Georgescu','Claudia','claudia50@gmail.com','0791000050');
 
 CREATE TABLE Locuri(
     IdLoc INT PRIMARY KEY NOT NULL,
@@ -387,11 +388,11 @@ CREATE TABLE Angajati(
     IdAngajat INT PRIMARY KEY NOT NULL,
     Nume VARCHAR(30) NOT NULL,
     Prenume VARCHAR(30) NOT NULL,
+	Email VARCHAR(50) NOT NULL,
+    Telefon VARCHAR(15) NOT NULL,
     Functie VARCHAR(30) NOT NULL,
     DataAngajarii DATE NOT NULL,
     SalariuLunar DECIMAL(8,2) NOT NULL,
-    Email VARCHAR(50) NOT NULL,
-    Telefon VARCHAR(15) NOT NULL,
     IdCinematografie INT NOT NULL,
 
     FOREIGN KEY (IdCinematografie)
@@ -399,40 +400,36 @@ CREATE TABLE Angajati(
 );
 
 INSERT INTO Angajati VALUES
-(1,'Popescu','Ion','Manager','2020-01-15',15000,'ion.popescu@cinema.md','069111111',1),
-(2,'Ionescu','Maria','Casier','2021-02-20',8500,'maria.ionescu@cinema.md','069111112',1),
-(3,'Rusu','Andrei','Operator','2019-03-11',9200,'andrei.rusu@cinema.md','069111113',1),
-(4,'Munteanu','Elena','Curatenie','2022-04-10',6500,'elena.munteanu@cinema.md','069111114',1),
-(5,'Popa','Daniel','Paza','2021-05-18',7800,'daniel.popa@cinema.md','069111115',1),
-(6,'Moraru','Ana','Manager','2018-06-12',14800,'ana.moraru@cinema.md','069111116',2),
-
-(7,'Ceban','Victor','Casier','2020-07-07',8300,'victor.ceban@cinema.md','069111117',2),
-(8,'Dumitru','Irina','Operator','2019-08-14',9100,'irina.dumitru@cinema.md','069111118',2),
-(9,'Luca','Mihai','Curatenie','2023-01-19',6400,'mihai.luca@cinema.md','069111119',2),
-(10,'Stan','Alina','Paza','2021-09-23',7700,'alina.stan@cinema.md','069111120',2),
-(11,'Toma','Cristian','Manager','2017-10-02',15200,'cristian.toma@cinema.md','069111121',3),
-(12,'Nistor','Bianca','Casier','2020-11-30',8600,'bianca.nistor@cinema.md','069111122',3),
-
-(13,'Enache','Paul','Operator','2019-12-25',9300,'paul.enache@cinema.md','069111123',3),
-(14,'Voicu','Simona','Curatenie','2022-01-05',6600,'simona.voicu@cinema.md','069111124',3),
-(15,'Marin','George','Paza','2021-02-16',7900,'george.marin@cinema.md','069111125',3),
-(16,'Barbu','Raluca','Manager','2018-03-27',14900,'raluca.barbu@cinema.md','069111126',4),
-(17,'Ilie','Adrian','Casier','2020-04-09',8400,'adrian.ilie@cinema.md','069111127',4),
-(18,'Costin','Daria','Operator','2019-05-15',9150,'daria.costin@cinema.md','069111128',4),
-
-(19,'Florea','Alex','Curatenie','2022-06-20',6700,'alex.florea@cinema.md','069111129',4),
-(20,'Neagu','Teodora','Paza','2021-07-28',7850,'teodora.neagu@cinema.md','069111130',4),
-(21,'Dragomir','Vlad','Manager','2017-08-03',15100,'vlad.dragomir@cinema.md','069111131',5),
-(22,'Gheorghe','Ioana','Casier','2020-09-14',8550,'ioana.gheorghe@cinema.md','069111132',5),
-(23,'Serban','Robert','Operator','2019-10-08',9250,'robert.serban@cinema.md','069111133',5),
-(24,'Matei','Larisa','Curatenie','2022-11-11',6800,'larisa.matei@cinema.md','069111134',5),
-
-(25,'Anghel','Florin','Paza','2021-12-18',7900,'florin.anghel@cinema.md','069111135',5),
-(26,'Badea','Denisa','Casier','2020-01-09',8450,'denisa.badea@cinema.md','069111136',1),
-(27,'Dinu','Alexandra','Operator','2019-02-17',9100,'alexandra.dinu@cinema.md','069111137',2),
-(28,'Filip','Rares','Paza','2021-03-29',7800,'rares.filip@cinema.md','069111138',3),
-(29,'Grigore','Paula','Curatenie','2022-04-14',6600,'paula.grigore@cinema.md','069111139',4),
-(30,'Iacob','Stefan','Casier','2020-05-05',8500,'stefan.iacob@cinema.md','069111140',5);
+(1,'Popescu','Ion','ion.popescu@cinema.md','069111111','Manager','2020-01-15',15000,1),
+(2,'Ionescu','Maria','maria.ionescu@cinema.md','069111112','Casier','2021-02-20',8500,1),
+(3,'Rusu','Andrei','andrei.rusu@cinema.md','069111113','Operator','2019-03-11',9200,1),
+(4,'Munteanu','Elena','elena.munteanu@cinema.md','069111114','Curatenie','2022-04-10',6500,1),
+(5,'Popa','Daniel','daniel.popa@cinema.md','069111115','Paza','2021-05-18',7800,1),
+(6,'Moraru','Ana','ana.moraru@cinema.md','069111116','Manager','2018-06-12',14800,2),
+(7,'Ceban','Victor','victor.ceban@cinema.md','069111117','Casier','2020-07-07',8300,2),
+(8,'Dumitru','Irina','irina.dumitru@cinema.md','069111118','Operator','2019-08-14',9100,2),
+(9,'Luca','Mihai','mihai.luca@cinema.md','069111119','Curatenie','2023-01-19',6400,2),
+(10,'Stan','Alina','alina.stan@cinema.md','069111120','Paza','2021-09-23',7700,2),
+(11,'Toma','Cristian','cristian.toma@cinema.md','069111121','Manager','2017-10-02',15200,3),
+(12,'Nistor','Bianca','bianca.nistor@cinema.md','069111122','Casier','2020-11-30',8600,3),
+(13,'Enache','Paul','paul.enache@cinema.md','069111123','Operator','2019-12-25',9300,3),
+(14,'Voicu','Simona','simona.voicu@cinema.md','069111124','Curatenie','2022-01-05',6600,3),
+(15,'Marin','George','george.marin@cinema.md','069111125','Paza','2021-02-16',7900,3),
+(16,'Barbu','Raluca','raluca.barbu@cinema.md','069111126','Manager','2018-03-27',14900,4),
+(17,'Ilie','Adrian','adrian.ilie@cinema.md','069111127','Casier','2020-04-09',8400,4),
+(18,'Costin','Daria','daria.costin@cinema.md','069111128','Operator','2019-05-15',9150,4),
+(19,'Florea','Alex','alex.florea@cinema.md','069111129','Curatenie','2022-06-20',6700,4),
+(20,'Neagu','Teodora','teodora.neagu@cinema.md','069111130','Paza','2021-07-28',7850,4),
+(21,'Dragomir','Vlad','vlad.dragomir@cinema.md','069111131','Manager','2017-08-03',15100,5),
+(22,'Gheorghe','Ioana','ioana.gheorghe@cinema.md','069111132','Casier','2020-09-14',8550,5),
+(23,'Serban','Robert','robert.serban@cinema.md','069111133','Operator','2019-10-08',9250,5),
+(24,'Matei','Larisa','larisa.matei@cinema.md','069111134','Curatenie','2022-11-11',6800,5),
+(25,'Anghel','Florin','florin.anghel@cinema.md','069111135','Paza','2021-12-18',7900,5),
+(26,'Badea','Denisa','denisa.badea@cinema.md','069111136','Casier','2020-01-09',8450,1),
+(27,'Dinu','Alexandra','alexandra.dinu@cinema.md','069111137','Operator','2019-02-17',9100,2),
+(28,'Filip','Rares','rares.filip@cinema.md','069111138','Paza','2021-03-29',7800,3),
+(29,'Grigore','Paula','paula.grigore@cinema.md','069111139','Curatenie','2022-04-14',6600,4),
+(30,'Iacob','Stefan','stefan.iacob@cinema.md','069111140','Casier','2020-05-05',8500,5);
 
 
 
@@ -445,6 +442,8 @@ SELECT * FROM Clienti;
 SELECT * FROM Bilete;
 SELECT * FROM Angajati;
 
+
+DELETE FROM cinematografie;
 
 
 DROP TABLE Bilete;
