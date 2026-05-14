@@ -121,19 +121,6 @@ public class Film implements IAfisare {
                 '}';
     }
 
-    //Metoda optionala
-    public boolean estePentruAdulti() {
-        return limVarsta >= 18;
-    }
-    public boolean esteLung() {
-        return durMinute > 150;
-    }
-    public String categorieFilm() {
-        if(limVarsta >= 18) {
-            return "Adult";
-        }
-        return "General";
-    }
 
     @Override
     public void afisare(){

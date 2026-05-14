@@ -72,22 +72,37 @@ public class ProiectieRepository {
     }
 
     // UPDATE (simple version)
-    public void updatePret(int id, double pretNou) {
+    public void updateProiectieField(
+            int id,
+            String coloana,
+            Object valoare
+    ) {
 
-        String sql = "UPDATE Proiectii SET PretBaza=? WHERE IdProiectii=?";
+        String sql =
+                "UPDATE Proiectii SET " + coloana +
+                        " = ? WHERE IdProiectii = ?";
 
-        try (Connection conn = Connect.connect();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (
+                Connection conn = Connect.connect();
+                PreparedStatement ps = conn.prepareStatement(sql)
+        ) {
 
-            ps.setDouble(1, pretNou);
+            ps.setObject(1, valoare);
             ps.setInt(2, id);
 
-            ps.executeUpdate();
+            int rows = ps.executeUpdate();
 
-            System.out.println("Pret actualizat!");
+            if(rows > 0) {
+                System.out.println("Proiectie actualizata!");
+            }
+            else {
+                System.out.println("Proiectia nu exista!");
+            }
 
         } catch (SQLException e) {
-            System.out.println("Eroare update proiectie: " + e.getMessage());
+            System.out.println(
+                    "Eroare update proiectie: " + e.getMessage()
+            );
         }
     }
 

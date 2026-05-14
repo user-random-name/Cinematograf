@@ -72,22 +72,30 @@ public class AngajatRepository {
     }
 
     // UPDATE (simple, clean)
-    public void updateSalariu(int id, double salariuNou) {
+    public void updateAngajatField(int id, String coloana, Object valoare) {
 
-        String sql = "UPDATE angajati SET SalariuLunar = ? WHERE IdAngajat = ?";
+        String sql =
+                "UPDATE Angajati SET " + coloana + " = ? WHERE IdAngajat = ?";
 
-        try (Connection conn = Connect.connect();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (
+                Connection conn = Connect.connect();
+                PreparedStatement ps = conn.prepareStatement(sql)
+        ) {
 
-            ps.setDouble(1, salariuNou);
+            ps.setObject(1, valoare);
             ps.setInt(2, id);
 
-            ps.executeUpdate();
+            int rows = ps.executeUpdate();
 
-            System.out.println("Salariu actualizat!");
+            if(rows > 0) {
+                System.out.println("Angajat actualizat!");
+            }
+            else {
+                System.out.println("Angajatul nu exista!");
+            }
 
         } catch (SQLException e) {
-            System.out.println("Eroare UPDATE: " + e.getMessage());
+            System.out.println("Eroare update angajat: " + e.getMessage());
         }
     }
 

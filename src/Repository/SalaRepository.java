@@ -58,20 +58,37 @@ public class SalaRepository {
     }
 
     // UPDATE
-    public void updateSalaName(int id, String newName) {
-        String sql = "UPDATE Sali SET NumeSala=? WHERE IdSala=?";
+    public void updateSalaField(
+            int id,
+            String coloana,
+            Object valoare
+    ) {
 
-        try (Connection conn = Connect.connect();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        String sql =
+                "UPDATE Sali SET " + coloana +
+                        " = ? WHERE IdSala = ?";
 
-            ps.setString(1, newName);
+        try (
+                Connection conn = Connect.connect();
+                PreparedStatement ps = conn.prepareStatement(sql)
+        ) {
+
+            ps.setObject(1, valoare);
             ps.setInt(2, id);
 
-            ps.executeUpdate();
-            System.out.println("Sala actualizata!");
+            int rows = ps.executeUpdate();
+
+            if(rows > 0) {
+                System.out.println("Sala actualizata!");
+            }
+            else {
+                System.out.println("Sala nu exista!");
+            }
 
         } catch (SQLException e) {
-            System.out.println("Eroare update sala: " + e.getMessage());
+            System.out.println(
+                    "Eroare update sala: " + e.getMessage()
+            );
         }
     }
 

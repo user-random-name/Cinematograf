@@ -1,70 +1,44 @@
-import Model.Cinematograf;
-import Repository.CinematografRepository;
-import Enum.Oras;
-import Enum.Tara;
+import Menu.UserMenu;
+import Menu.AdminMenu;
 
-import java.util.List;
 import java.util.Scanner;
 
 public class Main {
+
     public static void main(String[] args) {
 
+        Scanner sc = new Scanner(System.in);
 
-        /*Scanner sc = new Scanner(System.in);
-        CinematografRepository repo = new CinematografRepository();
+        UserMenu userMenu = new UserMenu();
+        AdminMenu adminMenu = new AdminMenu();
 
-        System.out.print("ID cinematograf: ");
-        int id = sc.nextInt();
-        sc.nextLine();
+        while (true) {
 
-        System.out.print("Nume: ");
-        String nume = sc.nextLine();
+            System.out.println("\n===== CINEMA SYSTEM =====");
+            System.out.println("1. Login as User");
+            System.out.println("2. Login as Admin");
+            System.out.println("0. Exit");
 
-        System.out.print("Adresa: ");
-        String adresa = sc.nextLine();
+            int opt = sc.nextInt();
+            sc.nextLine();
 
-        System.out.print("Cod postal: ");
-        String codPostal = sc.nextLine();
+            switch (opt) {
 
-        System.out.print("Oras: ");
-        Oras oras = Oras.valueOf( sc.nextLine().toUpperCase() );
+                case 1:
+                    userMenu.start();
+                    break;
 
-        System.out.print("Tara: ");
-        Tara tara = Tara.valueOf(sc.nextLine().toUpperCase());
+                case 2:
+                    adminMenu.start();
+                    break;
 
-        Cinematograf cinematograf = new Cinematograf(id, nume, adresa, codPostal, oras, tara);
+                case 0:
+                    System.out.println("Exiting system...");
+                    return;
 
-
-// CREATE
-        repo.addCinematograf(cinematograf);
-
-
-// READ
-        List<Cinematograf> lista = repo.getAllCinematografe();
-
-        for(Cinematograf c : lista) {
-            System.out.println(c);
+                default:
+                    System.out.println("Invalid option!");
+            }
         }
-
-
-// UPDATE
-        repo.updateCinematograf(1,"Cineplex");
-
-
-// DELETE
-        repo.deleteCinematograf(6);
-        repo.deleteCinematograf(7);
-        repo.deleteCinematograf(8);
-        repo.deleteCinematograf(9);
-        repo.deleteCinematograf(10);
-        repo.deleteCinematograf(11);*/
-
-
-
-
-
-
     }
 }
-
-

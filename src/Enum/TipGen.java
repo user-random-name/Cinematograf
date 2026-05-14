@@ -7,7 +7,7 @@ public enum TipGen {
     DRAMA,
     HORROR,
     SCIENCE_FICTION,
-    FANTASY,
+    FANTEZIE,
     ROMANTIC,
     THRILLER,
     WESTERN,

@@ -61,7 +61,6 @@ public class FilmRepository {
                 Film film = new Film(
                                 rs.getInt("IdFilme"),
                                 rs.getString("Denumire"),
-
                                 rs.getDate("Data_Lansare").toLocalDate(),
                                 TipGen.valueOf(rs.getString("Gen") .toUpperCase()),
                                 TipAudio.valueOf(rs.getString("Audio").toUpperCase()),
@@ -80,31 +79,29 @@ public class FilmRepository {
 
 
     // UPDATE
-    public void updateFilm(
-            int id,
-            String denumireNoua
-    ) {
-        String sql ="UPDATE filme " + "SET Denumire = ? " + "WHERE IdFilme = ?;";
+    public void updateFilmField(int id, String coloana, Object valoare) {
+
+        String sql = "UPDATE Filme SET " + coloana + " = ? WHERE IdFilme = ?";
 
         try (
                 Connection conn = Connect.connect();
-                PreparedStatement pstmt = conn.prepareStatement(sql)
+                PreparedStatement ps = conn.prepareStatement(sql)
         ) {
 
-            pstmt.setString(1,denumireNoua);
-            pstmt.setInt(2, id);
+            ps.setObject(1, valoare);
+            ps.setInt(2, id);
 
-            int rows = pstmt.executeUpdate();
+            int rows = ps.executeUpdate();
 
             if(rows > 0) {
-                System.out.println("Filmul a fost modificat!");
-            } else {
-                System.out.println("Nu exista film cu acest ID!");
+                System.out.println("Camp actualizat!");
+            }
+            else {
+                System.out.println("Filmul nu exista!");
             }
 
         } catch (SQLException e) {
-
-            System.out.println("Eroare la modificare: "+ e.getMessage());
+            System.out.println("Eroare update film: " + e.getMessage());
         }
     }
 

@@ -82,31 +82,37 @@ public class CinematografRepository {
 
 
     // UPDATE
-    public void updateCinematograf(
+    public void updateCinematografField(
             int id,
-            String numeNou
+            String coloana,
+            Object valoare
     ) {
 
-        String sql = "UPDATE cinematografie " + "SET Nume = ? " + "WHERE IdCinematografie = ?;";
+        String sql =
+                "UPDATE Cinematografie SET " + coloana +
+                        " = ? WHERE IdCinematografie = ?";
 
         try (
                 Connection conn = Connect.connect();
-                PreparedStatement pstmt = conn.prepareStatement(sql)
+                PreparedStatement ps = conn.prepareStatement(sql)
         ) {
 
-            pstmt.setString(1, numeNou);
-            pstmt.setInt(2, id);
+            ps.setObject(1, valoare);
+            ps.setInt(2, id);
 
-            int rows = pstmt.executeUpdate();
+            int rows = ps.executeUpdate();
 
-            if (rows > 0) {
-                System.out.println("Cinematograful a fost modificat!");
-            } else {
-                System.out.println("Nu exista cinematograf cu acest ID!");
+            if(rows > 0) {
+                System.out.println("Cinematograf actualizat!");
             }
-        } catch (SQLException e) {
+            else {
+                System.out.println("Cinematograful nu exista!");
+            }
 
-            System.out.println("Eroare la modificare: " + e.getMessage());
+        } catch (SQLException e) {
+            System.out.println(
+                    "Eroare update cinematograf: " + e.getMessage()
+            );
         }
     }
 

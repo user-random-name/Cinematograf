@@ -61,19 +61,27 @@ public class ClientRepository {
     }
 
     // UPDATE EMAIL
-    public void updateEmail(int id, String emailNou) {
+    public void updateClientField(int id, String coloana, Object valoare) {
 
-        String sql = "UPDATE Clienti SET Email=? WHERE IdClienti=?";
+        String sql =
+                "UPDATE Clienti SET " + coloana + " = ? WHERE IdClienti = ?";
 
-        try (Connection conn = Connect.connect();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (
+                Connection conn = Connect.connect();
+                PreparedStatement ps = conn.prepareStatement(sql)
+        ) {
 
-            ps.setString(1, emailNou);
+            ps.setObject(1, valoare);
             ps.setInt(2, id);
 
-            ps.executeUpdate();
+            int rows = ps.executeUpdate();
 
-            System.out.println("Email actualizat!");
+            if(rows > 0) {
+                System.out.println("Client actualizat!");
+            }
+            else {
+                System.out.println("Clientul nu exista!");
+            }
 
         } catch (SQLException e) {
             System.out.println("Eroare update client: " + e.getMessage());
