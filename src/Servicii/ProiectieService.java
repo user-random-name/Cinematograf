@@ -4,7 +4,7 @@ import Model.Proiectie;
 import Repository.ProiectieRepository;
 import Utils.FilterUtils;
 import Utils.SortUtils;
-
+import Enum.ProiectieField;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Comparator;
@@ -28,7 +28,7 @@ public class ProiectieService {
     public List<Proiectie> cautaDupaFilme(int idFilm) {
         return repo.getAllProiectii()
                 .stream()
-                .filter(p -> p.getId() == idFilm)
+                .filter(p -> p.getIdFilm() == idFilm)
                 .toList();
     }
 
@@ -52,7 +52,7 @@ public class ProiectieService {
     public List<Proiectie> filtreazaDupaFilm(int idFilm) {
         return FilterUtils.filter(
                 repo.getAllProiectii(),
-                p -> p.getId() == idFilm
+                p -> p.getIdFilm() == idFilm
         );
     }
 
@@ -72,12 +72,8 @@ public class ProiectieService {
     }
 
     // UPDATE
-    public void modificaCampProiectie(
-            int id,
-            String camp,
-            Object valoare
-    ) {
-        repo.updateProiectieField(id, camp, valoare);
+    public void modificaCampProiectie(int id, ProiectieField camp, Object valoare) {
+        repo.updateProiectieField(id, camp.getColumn(), valoare);
     }
 
     // DELETE

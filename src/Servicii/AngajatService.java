@@ -4,6 +4,7 @@ import Model.Angajat;
 import Repository.AngajatRepository;
 import Utils.FilterUtils;
 import Utils.SortUtils;
+import Enum.AngajatField;
 
 import java.util.Comparator;
 import java.util.List;
@@ -48,10 +49,10 @@ public class AngajatService {
     // UPDATE
     public void modificaCampAngajat(
             int id,
-            String camp,
+            AngajatField camp,
             Object valoare
     ) {
-        repo.updateAngajatField(id, camp, valoare);
+        repo.updateAngajatField(id, camp.getColumn(), valoare);
     }
 
     // DELETE

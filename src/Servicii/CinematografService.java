@@ -2,7 +2,7 @@ package Servicii;
 
 import Model.Cinematograf;
 import Repository.CinematografRepository;
-
+import Enum.CinemaField;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -45,10 +45,10 @@ public class CinematografService {
     // UPDATE (only name in your repo)
     public void modificaCampCinematograf(
             int id,
-            String camp,
+            CinemaField camp,
             Object valoare
     ) {
-        repo.updateCinematografField(id, camp, valoare);
+        repo.updateCinematografField(id, camp.getColumn(), valoare);
     }
 
     // SORT by name ASC

@@ -4,7 +4,7 @@ import Model.Sala;
 import Repository.SalaRepository;
 import Utils.FilterUtils;
 import Utils.SortUtils;
-
+import Enum.SalaField;
 import java.util.Comparator;
 import java.util.List;
 
@@ -29,10 +29,10 @@ public class SalaService {
     //UPDATE
     public void modificaCampSala(
             int id,
-            String camp,
+            SalaField camp,
             Object valoare
     ) {
-        repo.updateSalaField(id, camp, valoare);
+        repo.updateSalaField(id, camp.getColumn(), valoare);
     }
 
     // SEARCH

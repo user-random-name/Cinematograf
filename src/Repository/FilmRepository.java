@@ -88,7 +88,11 @@ public class FilmRepository {
                 PreparedStatement ps = conn.prepareStatement(sql)
         ) {
 
-            ps.setObject(1, valoare);
+            if (valoare instanceof Enum<?>) {
+                ps.setString(1, valoare.toString());
+            } else {
+                ps.setObject(1, valoare);
+            }
             ps.setInt(2, id);
 
             int rows = ps.executeUpdate();

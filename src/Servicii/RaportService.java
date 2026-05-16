@@ -1,177 +1,202 @@
 package Servicii;
 
-import Model.Bilet;
-import Model.Client;
-import Model.Film;
+import Model.*;
+import Repository.*;
+import Enum.StatusBilet;
 
-import Repository.BiletRepository;
-import Repository.ClientRepository;
-import Repository.FilmRepository;
-
-import java.util.Comparator;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class RaportService {
 
-    private BiletRepository biletRepo;
-    private ClientRepository clientRepo;
-    private FilmRepository filmRepo;
+    // Repository declarations should be at the beginning
+    final BiletRepository biletRepo = new BiletRepository();
+    final ProiectieRepository proiectieRepo = new ProiectieRepository();
+    final FilmRepository filmRepo = new FilmRepository();
+    final SalaRepository salaRepo = new SalaRepository(); // Added SalaRepository
+    final LocRepository locRepo = new LocRepository();   // Added LocRepository
 
-    public RaportService() {
-        biletRepo = new BiletRepository();
-        clientRepo = new ClientRepository();
-        filmRepo = new FilmRepository();
-    }
+    // Now declare filme as a class member to reuse it
+    List<Film> filme;
 
-    // =========================================
-    // TOTAL BILETE VANDUTE
-    // =========================================
-    public int totalBileteVandute() {
-        return biletRepo.getAllBilete().size();
-    }
+    // ===================== MAIN REPORT =====================
 
-    // =========================================
-    // VENIT TOTAL
-    // =========================================
-    public double venitTotal() {
-        return biletRepo.getAllBilete()
-                .stream()
-                .mapToDouble(Bilet::getPretFinal)
-                .sum();
-    }
+    public void raportVenituri() {
+        // Using the correct methods for fetching data
+        List<Bilet> bilete = biletRepo.getAllBilete();
+        List<Proiectie> proiectii = proiectieRepo.getAllProiectii();
+        // Initialize filmes here
+        filme = filmRepo.getAllFilme();
 
-    // =========================================
-    // CLIENTI CU CELE MAI MULTE BILETE
-    // =========================================
-    public void topClienti(int limita) {
+        StringBuilder sb = new StringBuilder();
+        double venitTotalCinema = 0;
 
-        Map<Integer, Long> clientiSortati =
-                biletRepo.getAllBilete()
-                        .stream()
-                        .collect(Collectors.groupingBy(
-                                Bilet::getIdClient,
-                                Collectors.counting()
-                        ));
+        sb.append("=========== RAPORT VENITURI ===========\n\n");
 
-        List<Map.Entry<Integer, Long>> rezultat =
-                clientiSortati.entrySet()
-                        .stream()
-                        .sorted(Map.Entry.<Integer, Long>comparingByValue().reversed())
-                        .limit(limita)
-                        .collect(Collectors.toList());
+        for (Film film : filme) {
+            int bileteVandute = 0;
+            double venitFilm = 0;
 
-        System.out.println("=== TOP CLIENTI ===");
-
-        for (Map.Entry<Integer, Long> entry : rezultat) {
-
-            int idClient = entry.getKey();
-            long nrBilete = entry.getValue();
-
-            Client client = clientRepo.getAllClients()
-                    .stream()
-                    .filter(c -> c.getId() == idClient)
-                    .findFirst()
-                    .orElse(null);
-
-            if (client != null) {
-                System.out.println(
-                        client.getNume() + " "
-                                + client.getPrenume()
-                                + " -> "
-                                + nrBilete
-                                + " bilete"
-                );
+            for (Proiectie p : proiectii) {
+                if (p.getIdFilm() == film.getId()) {
+                    for (Bilet b : bilete) {
+                        if (b.getIdProiectie() == p.getId()
+                                && b.getStatusBilet() == StatusBilet.CUMPARAT) {
+                            bileteVandute++;
+                            venitFilm += b.getPretFinal();
+                        }
+                    }
+                }
             }
+
+            if (bileteVandute > 0) {
+                sb.append("Film: ").append(film.getDenumire()).append("\n");
+                sb.append("Bilete vandute: ").append(bileteVandute).append("\n");
+                sb.append("Venit: ").append(venitFilm).append(" MDL\n\n");
+                venitTotalCinema += venitFilm;
+            }
+        }
+
+        sb.append("---------------------------------------\n");
+        sb.append("VENIT TOTAL CINEMA: ").append(venitTotalCinema).append(" MDL\n");
+        sb.append("=======================================\n");
+
+        String raport = sb.toString();
+        System.out.println(raport);
+        exportTxt("raport_venituri.txt", raport);
+    }
+
+    // ===================== EXPORT =====================
+
+    public void exportTxt(String numeFisier, String continut) {
+        try (PrintWriter pw = new PrintWriter(numeFisier)) {
+            pw.print(continut);
+            System.out.println("Raport exportat cu succes in " + numeFisier);
+        } catch (Exception e) {
+            System.out.println("Eroare export raport: " + e.getMessage());
         }
     }
 
-    // =========================================
-    // CLIENTI CU MAI MULT DE 10 VIZITE
-    // =========================================
-    public void clientiFideli() {
+    public void raportFilmePopulare() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("======= FILME POPULARE =======\n\n");
 
-        Map<Integer, Long> clienti =
-                biletRepo.getAllBilete()
-                        .stream()
-                        .collect(Collectors.groupingBy(
-                                Bilet::getIdClient,
-                                Collectors.counting()
-                        ));
+        // Store ticket counts per film
+        Map<Integer, Integer> biletePeFilm = new HashMap<>();
 
-        System.out.println("=== CLIENTI FIDELI ===");
+        for (Bilet b : biletRepo.getAllBilete()) { // Use correct method
+            if (b.getStatusBilet() != StatusBilet.CUMPARAT) continue;
 
-        clienti.entrySet()
-                .stream()
-                .filter(entry -> entry.getValue() > 10)
-                .forEach(entry -> {
+            for (Proiectie p : proiectieRepo.getAllProiectii()) { // Use correct method
+                if (p.getId() == b.getIdProiectie()) {
+                    int filmId = p.getIdFilm();
+                    biletePeFilm.put(filmId, biletePeFilm.getOrDefault(filmId, 0) + 1);
+                }
+            }
+        }
 
-                    Client client = clientRepo.getAllClients()
-                            .stream()
-                            .filter(c -> c.getId() == entry.getKey())
-                            .findFirst()
-                            .orElse(null);
+        // Convert to list for sorting
+        List<Map.Entry<Integer, Integer>> lista = new ArrayList<>(biletePeFilm.entrySet());
+        lista.sort((a, b) -> b.getValue() - a.getValue()); // Sort DESC by tickets sold
 
-                    if (client != null) {
+        int rank = 1;
+        Film topFilm = null;
 
-                        System.out.println(
-                                client.getNume()
-                                        + " "
-                                        + client.getPrenume()
-                                        + " -> "
-                                        + entry.getValue()
-                                        + " vizite"
-                        );
-                    }
-                });
+        for (Map.Entry<Integer, Integer> entry : lista) {
+            Film film = findFilmById(filme, entry.getKey()); // Use class-level filme
+            if (film == null) continue;
+
+            sb.append(rank).append(". ").append(film.getDenumire()).append("\n");
+            sb.append("Bilete vandute: ").append(entry.getValue()).append("\n\n");
+
+            if (rank == 1) {
+                topFilm = film;
+            }
+            rank++;
+        }
+
+        sb.append("------------------------------\n");
+
+        if (topFilm != null) {
+            sb.append("CEL MAI POPULAR FILM:\n");
+            sb.append(topFilm.getDenumire()).append("\n");
+        }
+
+        sb.append("==============================\n");
+        String raport = sb.toString();
+        System.out.println(raport);
+        exportTxt("raport_filme_populare.txt", raport);
     }
 
-    // =========================================
-    // FILME SORTATE DUPA DURATA
-    // =========================================
-    public List<Film> filmeDupaDurataDESC() {
+    public void raportLocuri() {
+        List<Sala> sali = salaRepo.getAllSali(); // Correctly fetching all Sali
+        List<Loc> locuri = locRepo.getAllLocuri();  // Correctly fetching all Locuri
+        List<Bilet> bilete = biletRepo.getAllBilete(); // Use correct method
 
-        return filmRepo.getAllFilme()
-                .stream()
-                .sorted(
-                        Comparator.comparing(Film::getDurMinute)
-                                .reversed()
-                )
-                .collect(Collectors.toList());
+        StringBuilder sb = new StringBuilder();
+        sb.append("======= RAPORT LOCURI =======\n\n");
+
+        int totalOcupate = 0;
+        int totalLibere = 0;
+
+        for (Sala sala : sali) {
+            int capacitate = 0;
+
+            // Count all seats in this sala
+            for (Loc l : locuri) {
+                if (l.getIdSala() == sala.getId()) {
+                    capacitate++;
+                }
+            }
+
+            // Count occupied seats (tickets)
+            int ocupate = 0;
+
+            for (Bilet b : bilete) {
+                if (b.getStatusBilet() != StatusBilet.CUMPARAT) continue;
+
+                Proiectie p = findProiectieById(b.getIdProiectie());
+                if (p != null && p.getIdSala() == sala.getId()) {
+                    ocupate++;
+                }
+            }
+
+            int libere = capacitate - ocupate;
+            double grad = (capacitate == 0) ? 0 : ((double) ocupate / capacitate) * 100;
+
+            sb.append("Sala: ").append(sala.getNume()).append("\n");
+            sb.append("Locuri ocupate: ").append(ocupate).append("\n");
+            sb.append("Locuri libere: ").append(libere).append("\n");
+            sb.append("Grad ocupare: ").append(String.format("%.2f", grad)).append("%\n\n");
+
+            totalOcupate += ocupate;
+            totalLibere += libere;
+        }
+
+        sb.append("-----------------------------\n");
+        sb.append("TOTAL LOCURI OCUPATE: ").append(totalOcupate).append("\n");
+        sb.append("TOTAL LOCURI LIBERE: ").append(totalLibere).append("\n");
+        sb.append("=============================\n");
+
+        String raport = sb.toString();
+        System.out.println(raport);
+        exportTxt("raport_locuri.txt", raport);
     }
 
-    // =========================================
-    // FILME PENTRU ADULTI
-    // =========================================
-    public List<Film> filme18Plus() {
-
-        return filmRepo.getAllFilme()
-                .stream()
-                .filter(f -> f.getLimVarsta() >= 18)
-                .collect(Collectors.toList());
+    private Proiectie findProiectieById(int id) {
+        for (Proiectie p : proiectieRepo.getAllProiectii()) {
+            if (p.getId() == id) return p;
+        }
+        return null;
     }
 
-    // =========================================
-    // MEDIA PRETURILOR BILETELOR
-    // =========================================
-    public double mediaPretBilete() {
-
-        return biletRepo.getAllBilete()
-                .stream()
-                .mapToDouble(Bilet::getPretFinal)
-                .average()
-                .orElse(0);
-    }
-
-    // =========================================
-    // CEL MAI SCUMP BILET
-    // =========================================
-    public Bilet celMaiScumpBilet() {
-
-        return biletRepo.getAllBilete()
-                .stream()
-                .max(Comparator.comparing(Bilet::getPretFinal))
-                .orElse(null);
+    private Film findFilmById(List<Film> filme, int id) {
+        for (Film f : filme) {
+            if (f.getId() == id) return f;
+        }
+        return null;
     }
 }

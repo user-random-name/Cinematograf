@@ -1,10 +1,8 @@
 package Model;
 
 import Interfete.IAfisare;
-import Interfete.IRezervare;
 
 import java.time.LocalDate;
-import java.time.Period;
 
 public class Angajat extends Persoana implements IAfisare {
     private String functie;
@@ -66,20 +64,7 @@ public class Angajat extends Persoana implements IAfisare {
     }
 
 
-    //Metode optionale
-    public boolean esteManager() {
-        return functie.equalsIgnoreCase("Manager");
-    }
 
-    public int aniLucrati() {
-        return Period.between(dataAngajarii,LocalDate.now()).getYears();
-    }
-
-    public void maresteSalariu(double suma) {
-        if(suma <= 0) {
-            throw new IllegalArgumentException( "Suma invalida!");}
-        salariuLunar += suma;
-    }
 
     @Override
     public void afisare(){

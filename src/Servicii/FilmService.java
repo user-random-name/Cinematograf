@@ -1,6 +1,6 @@
 package Servicii;
 
-import Enum.TipGen;
+import Enum.*;
 import Model.Film;
 import Repository.FilmRepository;
 import Utils.FilterUtils;
@@ -32,9 +32,10 @@ public class FilmService {
     }
 
     // UPDATE
-    public void modificaCampFilm(int id, String camp, Object valoare) {
-        repo.updateFilmField(id, camp, valoare);
+    public void modificaCampFilm(int id, FilmField camp, Object valoare) {
+        repo.updateFilmField(id, camp.getColumn(), valoare);
     }
+
 
     // DELETE
     public void stergeFilm(int id) {

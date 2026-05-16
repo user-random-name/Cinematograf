@@ -95,30 +95,7 @@ public class Proiectie implements IAfisare {
                 '}';
     }
 
-    public boolean esteAstazi() {
-        return data.equals(LocalDate.now());
-    }
-    public boolean esteInWeekend() {
 
-        DayOfWeek zi = data.getDayOfWeek();
-
-        return zi == DayOfWeek.SATURDAY ||
-                zi == DayOfWeek.SUNDAY;
-    }
-    public boolean esteSeara() {
-        return ora.isAfter(LocalTime.of(18,0));
-    }
-
-    public boolean estePremium() {
-        return pretBaza >= 150;
-    }
-    public double calculeazaPretFinal(boolean vip){
-        return  pretBaza ;
-    }
-
-    public TipSubtirari areSubtitrare() {
-        return subtitrare;
-    }
 
     @Override
     public void afisare(){

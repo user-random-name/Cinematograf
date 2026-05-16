@@ -1,7 +1,10 @@
 package Servicii;
 
 import Model.Bilet;
+import Model.Proiectie;
 import Repository.BiletRepository;
+import Repository.ProiectieRepository;
+
 import Utils.FilterUtils;
 import Utils.SortUtils;
 
@@ -12,18 +15,24 @@ import java.util.stream.Collectors;
 
 public class BiletService {
 
-    private BiletRepository repo;
+    private final BiletRepository repo;
+    private final ProiectieRepository proiectieRepo;
 
     public BiletService() {
-        repo = new BiletRepository();
+        this.repo = new BiletRepository();
+        this.proiectieRepo = new ProiectieRepository();
     }
 
+    // =========================
     // CREATE
+    // =========================
     public void adaugaBilet(Bilet b) {
         repo.addBilet(b);
     }
 
+    // =========================
     // READ
+    // =========================
     public void afiseazaToateBiletele() {
         List<Bilet> lista = repo.getAllBilete();
 
@@ -35,22 +44,33 @@ public class BiletService {
         lista.forEach(System.out::println);
     }
 
-    // SEARCH BY CLIENT
+    // =========================
+    // SEARCH
+    // =========================
     public List<Bilet> cautaBileteDupaClient(int idClient) {
-        return repo.findByClient(idClient);
+        return repo.getAllBilete().stream()
+                .filter(b -> b.getIdClient() == idClient)
+                .toList();
     }
 
-    // UPDATE STATUS
+    // =========================
+    // UPDATE
+    // =========================
     public void modificaStatus(int id, String statusNou) {
         repo.updateStatus(id, statusNou);
     }
 
+    // =========================
     // DELETE
+    // =========================
     public void stergeBilet(int id) {
         repo.deleteBilet(id);
     }
 
-    // SORT BY DATE ASC
+    // =========================
+    // SORTING (RESTORED)
+    // =========================
+
     public List<Bilet> sortareDupaDataASC() {
         return SortUtils.sort(
                 repo.getAllBilete(),
@@ -58,7 +78,6 @@ public class BiletService {
         );
     }
 
-    // SORT BY DATE DESC
     public List<Bilet> sortareDupaDataDESC() {
         return SortUtils.sort(
                 repo.getAllBilete(),
@@ -66,7 +85,6 @@ public class BiletService {
         );
     }
 
-    // SORT BY PRICE
     public List<Bilet> sortareDupaPretDESC() {
         return SortUtils.sort(
                 repo.getAllBilete(),
@@ -74,7 +92,10 @@ public class BiletService {
         );
     }
 
-    // FILTER BY STATUS
+    // =========================
+    // FILTERING (RESTORED)
+    // =========================
+
     public List<Bilet> filtreazaDupaStatus(String status) {
         return FilterUtils.filter(
                 repo.getAllBilete(),
@@ -82,7 +103,6 @@ public class BiletService {
         );
     }
 
-    // FILTER BY CLIENT
     public List<Bilet> filtreazaDupaClient(int idClient) {
         return FilterUtils.filter(
                 repo.getAllBilete(),
@@ -90,7 +110,6 @@ public class BiletService {
         );
     }
 
-    // FILTER BY DAY (real cinema feature)
     public List<Bilet> filtreazaDupaData(String data) {
         return FilterUtils.filter(
                 repo.getAllBilete(),
@@ -98,58 +117,46 @@ public class BiletService {
         );
     }
 
+    // =========================
+    // SEAT LOGIC (FIXED CORE)
+    // =========================
 
-            // BUSINESS LOGIC (IMPORTANT)
+    public boolean locEsteLiber(int idProiectie, int idLoc) {
+        return repo.getAllBilete().stream()
+                .noneMatch(b ->
+                        b.getIdProiectie() == idProiectie &&
+                                b.getIdLoc() == idLoc
+                );
+    }
 
-    // NR VIZITE PER CLIENT (replacement for nrVizite field)
-    public long nrViziteClient(int idClient) {
-        return repo.getAllBilete()
-                .stream()
-                .filter(b -> b.getIdClient() == idClient)
+    public int locuriOcupateInProiectie(int idProiectie) {
+        return (int) repo.getAllBilete().stream()
+                .filter(b -> b.getIdProiectie() == idProiectie)
+                .map(Bilet::getIdLoc)
+                .distinct()
                 .count();
     }
 
-    // CLIENTI FIDELI (real system feature)
-    public Map<Integer, Long> clientiDupaVizite() {
-        return repo.getAllBilete()
-                .stream()
-                .collect(Collectors.groupingBy(
-                        Bilet::getIdClient,
-                        Collectors.counting()
-                ));
+    public int locuriDisponibileInProiectie(int idProiectie, int capacitateSala) {
+        int ocupate = locuriOcupateInProiectie(idProiectie);
+        return Math.max(capacitateSala - ocupate, 0);
     }
 
-    // TOTAL REVENUE
+    // =========================
+    // BUSINESS ANALYTICS
+    // =========================
+
     public double venitTotal() {
-        return repo.getAllBilete()
-                .stream()
+        return repo.getAllBilete().stream()
                 .mapToDouble(Bilet::getPretFinal)
                 .sum();
     }
 
-    // REVENUE PER CLIENT
-    public Map<Integer, Double> venitPerClient() {
-        return repo.getAllBilete()
-                .stream()
+    public Map<Integer, Long> clientiDupaVizite() {
+        return repo.getAllBilete().stream()
                 .collect(Collectors.groupingBy(
                         Bilet::getIdClient,
-                        Collectors.summingDouble(Bilet::getPretFinal)
+                        Collectors.counting()
                 ));
-    }
-
-    public int locuriOcupateInSala(int idSala) {
-        return repo.getAllBilete().stream()
-                .filter(b -> b.getIdLoc() != 0)
-                .filter(b -> {
-                    // we assume LocRepository holds IdSala indirectly via Loc
-                    return b.getIdLoc() > 0;
-                })
-                .collect(Collectors.toList())
-                .size();
-    }
-
-    public int locuriDisponibileInSala(int capacitateSala, int idSala) {
-        int ocupate = locuriOcupateInSala(idSala);
-        return Math.max(capacitateSala - ocupate, 0);
     }
 }

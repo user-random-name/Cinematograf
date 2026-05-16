@@ -69,26 +69,7 @@ public class Sala implements IAfisare {
                 '}';
     }
 
-    //Metode optionale
-    public boolean esteVIP() {
-        return tipSala == TipSala.VIP;
-    }
 
-    public boolean esteDolby() {
-        return tipSala == TipSala.Dolby_Atmos;
-    }
-
-    public boolean areCapacitateMare() {
-        return capacitate >= 200;
-    }
-
-    public String afiseazaDetaliiSala() {
-        return nume + " | " + tipSala + " | Capacitate: " + capacitate;
-    }
-
-    public boolean poateRulaFilm3D() {
-        return tipSala == TipSala.THREE_D;
-    }
 
     @Override
     public void afisare(){

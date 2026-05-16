@@ -1,7 +1,9 @@
+import Menu.MainMenuAuth.Account;
+import Menu.MainMenuAuth.AuthService;
 import Menu.UserMenu;
 import Menu.AdminMenu;
 
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
 
@@ -9,8 +11,14 @@ public class Main {
 
         Scanner sc = new Scanner(System.in);
 
-        UserMenu userMenu = new UserMenu();
-        AdminMenu adminMenu = new AdminMenu();
+        List<Account> accounts = new ArrayList<>();
+        accounts.add(new Account("user1", "1234", "USER"));
+        accounts.add(new Account("admin1", "admin123", "ADMIN"));
+
+        AuthService authService = new AuthService(accounts);
+
+        UserMenu userMenu = new UserMenu(sc);
+        AdminMenu adminMenu = new AdminMenu(sc);
 
         while (true) {
 
@@ -22,22 +30,26 @@ public class Main {
             int opt = sc.nextInt();
             sc.nextLine();
 
+            Account loggedUser = null;
+
             switch (opt) {
 
-                case 1:
-                    userMenu.start();
-                    break;
+                case 1 -> {
+                    loggedUser = authService.login("USER", sc);
+                    if (loggedUser != null) userMenu.start();
+                }
 
-                case 2:
-                    adminMenu.start();
-                    break;
+                case 2 -> {
+                    loggedUser = authService.login("ADMIN", sc);
+                    if (loggedUser != null) adminMenu.start();
+                }
 
-                case 0:
+                case 0 -> {
                     System.out.println("Exiting system...");
                     return;
+                }
 
-                default:
-                    System.out.println("Invalid option!");
+                default -> System.out.println("Invalid option!");
             }
         }
     }

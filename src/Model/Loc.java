@@ -64,19 +64,7 @@ public class Loc implements IAfisare {
                 '}';
     }
 
-    //Metode optionale
-    public boolean esteVIP() {
-        return tipLoc == TipLoc.VIP;
-    }
-    public String getPozitie() {
-        return "Rand " + rand + ", Loc " + numarLoc;
-    }
-    public boolean estePeMargine() {
-        return numarLoc == 1 || numarLoc == 20;
-    }
-    public boolean esteCentral() {
-        return numarLoc >= 8 && numarLoc <= 12;
-    }
+
 
     @Override
     public void afisare(){

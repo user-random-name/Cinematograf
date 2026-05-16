@@ -81,14 +81,6 @@ public class Cinematograf implements IAfisare {
                 '}';
     }
 
-    //Metode optionale
-    public boolean esteInChisinau() {
-        return oras == Oras.CHISINAU;
-    }
-
-    public String afiseazaLocatie() {
-        return adresa + ", " + oras + ", " + tara;
-    }
 
     @Override
     public void afisare(){

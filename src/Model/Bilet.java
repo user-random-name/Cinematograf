@@ -93,25 +93,7 @@ public class Bilet implements IRezervare , IAfisare {
     }
 
 
-    //metode optionale
-    public void anuleazaBilet() {
-        if(statusBilet == StatusBilet.ANULAT) {
-            throw new IllegalStateException(
-                    "Biletul este deja anulat!"
-            );
-        }
-        statusBilet = StatusBilet.ANULAT;
-    }
-    public boolean esteCumparat(){return true;}
 
-    public void cumparaBilet() {
-        if(statusBilet == StatusBilet.ANULAT) {
-            throw new IllegalStateException(
-                    "Biletul anulat nu poate fi cumparat!"
-            );
-        }
-        statusBilet = StatusBilet.CUMPARAT;
-    }
 
     @Override
     public void rezerva() {

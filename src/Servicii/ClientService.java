@@ -4,6 +4,7 @@ import Model.Client;
 import Repository.ClientRepository;
 import Utils.FilterUtils;
 import Utils.SortUtils;
+import Enum.ClientiField;
 
 import java.util.Comparator;
 import java.util.List;
@@ -45,12 +46,8 @@ public class ClientService {
     }
 
     // UPDATE
-    public void modificaCampClient(
-            int id,
-            String camp,
-            Object valoare
-    ) {
-        repo.updateClientField(id, camp, valoare);
+    public void modificaCampClient(int id, ClientiField camp, Object valoare) {
+        repo.updateClientField(id, camp.getColumn(), valoare);
     }
 
     // DELETE

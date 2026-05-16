@@ -2,7 +2,7 @@ package Enum;
 
 public enum TipSala {
     TWO_D,
-    Dolby_Atmos,
+    DOLBY_ATMOS,
     VIP,
     THREE_D
 }
